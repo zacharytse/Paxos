@@ -1,4 +1,4 @@
-package BasicPaxos
+package basic_paxos
 
 import (
 	"fmt"
