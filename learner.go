@@ -7,6 +7,10 @@ import (
 	"net/rpc"
 )
 
+/**
+learner的作用：选择一个已被接收的提案做执行
+*/
+
 type Learner struct {
 	lis net.Listener
 	// 学习者id
@@ -34,6 +38,7 @@ func (l *Learner) chosen() interface{} {
 	for _, accepted := range l.acceptedMsg {
 		// 如果当前提案有效
 		if accepted.Number != 0 {
+			// 统计提案被接收的数量
 			acceptCounts[accepted.Number]++
 			acceptMsg[accepted.Number] = accepted
 		}
@@ -41,6 +46,7 @@ func (l *Learner) chosen() interface{} {
 
 	for n, count := range acceptCounts {
 		if count >= l.majority() {
+			// 提案被接收的数量超过半数则执行该提案
 			return acceptMsg[n].Value
 		}
 	}
